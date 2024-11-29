@@ -1,18 +1,31 @@
 package com.metacoding.authblog.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-
-    public User 로그인(UserRequset.LoginDTO loginDTO) {
-        User userPs = userRepository.findByUsername(loginDTO.getUsername());
-        if(!userPs.getPassword().equals(loginDTO.getPassword())) {
-            throw new RuntimeException("아이디 혹은 패스워드가 일치하지 않습니다.");
-        }
-        return userPs;
+    private final PasswordEncoder passwordEncoder;
+    // post 요청
+    // login일때 호출
+    // key 값 -> username, password
+    // content-type -> x-www-form-urlencoded
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("loadUserByUsername");
+        User user = userRepository.findByUsername(username);
+        return user;
+    }
+    @Transactional
+    public void 회원가입(UserRequset.JoinDTO joinDTO){
+        userRepository.save(joinDTO.toEntity(passwordEncoder));
     }
 }

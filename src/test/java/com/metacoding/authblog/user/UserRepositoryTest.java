@@ -1,14 +1,10 @@
-package com.metacoding.authblog;
+package com.metacoding.authblog.user;
 
-import com.metacoding.authblog.user.User;
-import com.metacoding.authblog.user.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-
-import java.util.Optional;
 
 @Import(UserRepository.class)
 @DataJpaTest

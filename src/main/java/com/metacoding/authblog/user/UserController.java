@@ -13,12 +13,16 @@ import java.net.http.HttpResponse;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final HttpSession session;
 
-    @PostMapping("/login")
-    public String login(UserRequset.LoginDTO loginDTO) {
-        User sessionUser = userService.로그인(loginDTO);
-        session.setAttribute("sessionUser", sessionUser);
-        return "redirect:/";
+    @GetMapping("/login-form")
+    public String loginForm() {
+        return "user/login-form";
     }
+
+    @PostMapping("/join")
+    public String join(UserRequset.JoinDTO joinDTO) {
+        userService.회원가입(joinDTO);
+        return "redirect:/login-form";
+    }
+
 }
